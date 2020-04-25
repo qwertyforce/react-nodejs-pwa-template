@@ -1,5 +1,18 @@
 import React from 'react';
 import logo from './logo.svg';
+import { Counter } from './features/counter/Counter';
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { fade, makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import clsx from 'clsx';
+import theme from "./theme";
+import {
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import AppBar from "./AppBar/AppBar";
 import './App.css';
 
 function App() {
@@ -7,20 +20,164 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <Counter />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <span>
+          <span>Learn </span>
+          <a
+            className="App-link"
+            href="https://reactjs.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            React
+          </a>
+          <span>, </span>
+          <a
+            className="App-link"
+            href="https://redux.js.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Redux
+          </a>
+          <span>, </span>
+          <a
+            className="App-link"
+            href="https://redux-toolkit.js.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Redux Toolkit
+          </a>
+          ,<span> and </span>
+          <a
+            className="App-link"
+            href="https://react-redux.js.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            React Redux
+          </a>
+        </span>
       </header>
     </div>
   );
 }
 
-export default App;
+
+function Home() {
+  return (
+    <div>
+      <h2>Home</h2>
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <div>
+      <h2>About</h2>
+    </div>
+  );
+}
+
+function Dashboard() {
+  return (
+    <div>
+      <h2>Dashboard</h2>
+    </div>
+  );
+}
+
+
+const drawerWidth = 240;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  },
+}));
+function App2(){
+
+  const classes = useStyles();
+  const [DynamicTheme, setTheme] = React.useState(createMuiTheme(theme));
+  const handleChangeTheme = () => {
+    theme.palette.type = theme.palette.type === "light" ? "dark" : "light";
+    // localStorage.setItem("theme_color", theme.palette.type);
+    setTheme(createMuiTheme(theme));
+  };
+  const [DrawerOpen, setDrawerOpen] = React.useState(false);
+  const handleDrawerOpen = () => {
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+  const DrawerProps={
+    DrawerOpen:DrawerOpen,
+    setDrawerOpen:setDrawerOpen,
+    handleDrawerOpen:handleDrawerOpen,
+    handleDrawerClose:handleDrawerClose
+  }
+    return (
+    <ThemeProvider theme={DynamicTheme}>
+      <CssBaseline />
+      <div className={classes.root}>
+      <AppBar {...DrawerProps}/>
+      <Box my={8} className={clsx(classes.content, {
+          [classes.contentShift]: DrawerOpen,
+        })}><h2>3g3g3g3g3g3g3g3g3g3g3g</h2></Box>
+
+      </div>
+       </ThemeProvider>
+    )
+ //    return (
+ // <div>
+ //        <ul>
+ //          <li>
+ //            <Link to="/">Home</Link>
+ //          </li>
+ //          <li>
+ //            <Link to="/about">About</Link>
+ //          </li>
+ //          <li>
+ //            <Link to="/dashboard">Dashboard</Link>
+ //          </li>
+ //        </ul>
+
+ //        <hr />
+ //        <Switch>
+ //          <Route exact path="/">
+ //            <Home />
+ //          </Route>
+ //          <Route path="/about">
+ //            <About />
+ //          </Route>
+ //          <Route path="/dashboard">
+ //            <Dashboard />
+ //          </Route>
+ //        </Switch>
+ //        <h1>124</h1>
+ //      </div>
+ //    )
+}
+export default App2;
