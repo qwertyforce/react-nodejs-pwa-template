@@ -10,8 +10,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail'
+import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined';
 import Drawer from '@material-ui/core/Drawer';
 import theme from "./../theme";
+import {Link} from "react-router-dom";
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -31,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-  
+
 
 function AppDrawer (props) {
   const classes = useStyles();
@@ -46,27 +48,36 @@ function AppDrawer (props) {
         }}
       >
         <div className={classes.drawerHeader}>
+          <h1>Sample Text</h1>
           <IconButton onClick={props.handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+        <ListItem button component={Link} to="/dashboard"  >
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <ListItemText>Text</ListItemText>
+        </ListItem>
+        <ListItem button component={Link} to="/dashboard"  >
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText>Text 2</ListItemText>
+        </ListItem>
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+        <ListItem button component={Link} to="/dashboard"  >
+          <ListItemIcon><MailIcon/></ListItemIcon>
+          <ListItemText>Text 3</ListItemText>
+        </ListItem>
+        <ListItem button component={Link} to="/dashboard"  >
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText>Text 4</ListItemText>
+        </ListItem>
+        <ListItem button component={Link} to="/settings"  >
+          <ListItemIcon><SettingsApplicationsOutlinedIcon/></ListItemIcon>
+          <ListItemText>Settings</ListItemText>
+        </ListItem>
         </List>
       </Drawer>
   );

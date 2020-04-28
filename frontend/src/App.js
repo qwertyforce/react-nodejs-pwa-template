@@ -7,12 +7,9 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import clsx from 'clsx';
 import theme from "./theme";
-import {
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import {Switch,Route,Link} from "react-router-dom";
 import AppBar from "./AppBar/AppBar";
+import Settings from "./Settings";
 import './App.css';
 
 function App() {
@@ -116,22 +113,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function App2(){
-
   const classes = useStyles();
+
+  //Theme color/////////////////////////////////////////////////////////////
   const [DynamicTheme, setTheme] = React.useState(createMuiTheme(theme));
-  const handleChangeTheme = () => {
-    theme.palette.type = theme.palette.type === "light" ? "dark" : "light";
-    // localStorage.setItem("theme_color", theme.palette.type);
-    setTheme(createMuiTheme(theme));
-  };
+  const [theme_color, set_theme_color] = React.useState("light");
   const [DrawerOpen, setDrawerOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
   };
-
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+  const handleChangeTheme = () => {
+    theme.palette.type = theme.palette.type === "light" ? "dark" : "light";
+    localStorage.setItem("theme_color", theme.palette.type);
+    setTheme(createMuiTheme(theme));
+  };
+  ///////////////////////////////////////////////////////////////////////////
+
+  ////On start//////////////////////////////////////////////////////////////
+  React.useEffect(() => {
+    let theme_color_local = localStorage.getItem("theme_color");
+    if (theme_color_local) {
+       set_theme_color(theme_color_local)
+    }else{
+      localStorage.setItem("theme_color", theme_color);
+     }
+    if(theme_color_local==="dark"){
+      handleChangeTheme()
+     }
+  }, []);
+  ///////////////////////////////////////////////////////////////////////////
   const DrawerProps={
     DrawerOpen:DrawerOpen,
     setDrawerOpen:setDrawerOpen,
@@ -143,41 +156,25 @@ function App2(){
       <CssBaseline />
       <div className={classes.root}>
       <AppBar {...DrawerProps}/>
-      <Box my={8} className={clsx(classes.content, {
-          [classes.contentShift]: DrawerOpen,
-        })}><h2>3g3g3g3g3g3g3g3g3g3g3g</h2></Box>
+      <Box my={4} className={clsx(classes.content, {[classes.contentShift]: DrawerOpen})}>
+
+        <Switch>
+                 <Route exact path="/">
+                   <Home />
+                 </Route>
+                 <Route path="/about">
+                   <About />
+                 </Route>
+                 <Route path="/settings">
+                   <Settings handleChangeTheme={handleChangeTheme} />
+                 </Route>
+        </Switch>
+
+
+        </Box>
 
       </div>
        </ThemeProvider>
     )
- //    return (
- // <div>
- //        <ul>
- //          <li>
- //            <Link to="/">Home</Link>
- //          </li>
- //          <li>
- //            <Link to="/about">About</Link>
- //          </li>
- //          <li>
- //            <Link to="/dashboard">Dashboard</Link>
- //          </li>
- //        </ul>
-
- //        <hr />
- //        <Switch>
- //          <Route exact path="/">
- //            <Home />
- //          </Route>
- //          <Route path="/about">
- //            <About />
- //          </Route>
- //          <Route path="/dashboard">
- //            <Dashboard />
- //          </Route>
- //        </Switch>
- //        <h1>124</h1>
- //      </div>
- //    )
 }
 export default App2;
