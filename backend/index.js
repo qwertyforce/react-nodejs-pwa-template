@@ -39,14 +39,14 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     name: "session",
-    cookie: {      
-        maxAge: 14 * 24 * 60 * 60 * 1000,              //use secure: true   
+    cookie: {
+        maxAge: 14 * 24 * 60 * 60 * 1000,              //use secure: true
         sameSite: 'lax'
     },
     store: new MongoStore({
         url: 'mongodb://localhost/user_data',
         ttl: 14 * 24 * 60 * 60
-    }) // = 14 days. Default 
+    }) // = 14 days. Default
 }))
 
 const port = 80;
@@ -62,18 +62,18 @@ app.listen(port, () => { //Uncomment if you want to use http
 // console.log(`Server is listening on port ${port}`);
 
 const profile=require('./routes/profile.js')
-const google_oauth_redirect=require('./routes/google_oauth_redirect.js') 
-const github_oauth_redirect=require('./routes/github_oauth_redirect.js') 
+const google_oauth_redirect=require('./routes/google_oauth_redirect.js')
+const github_oauth_redirect=require('./routes/github_oauth_redirect.js')
 
-const github_oauth_callback=require('./routes/github_oauth_callback.js') 
-const google_oauth_callback=require('./routes/google_oauth_callback.js') 
+const github_oauth_callback=require('./routes/github_oauth_callback.js')
+const google_oauth_callback=require('./routes/google_oauth_callback.js')
 
-const signup=require('./routes/signup.js') 
-const login=require('./routes/login.js') 
-const change_password=require('./routes/change_password.js') 
-const forgot_password=require('./routes/forgot_password.js') 
+const signup=require('./routes/signup.js')
+const login=require('./routes/login.js')
+const change_password=require('./routes/change_password.js')
+const forgot_password=require('./routes/forgot_password.js')
 
-const activate_account_email=require('./routes/activate_account_email.js') 
+const activate_account_email=require('./routes/activate_account_email.js')
 
 app.get('/profile',profile)
 
@@ -84,20 +84,6 @@ app.get('/auth/github',github_oauth_redirect)
 
 app.get('/auth/github/callback',github_oauth_callback)
 app.get('/auth/google/callback',google_oauth_callback)
-
-
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'login.html'))
-})
-app.get('/signup', (req, res) => {
-    res.sendFile(path.join(__dirname, 'signup.html'))
-})
-app.get('/forgot_password', (req, res) => {
-    res.sendFile(path.join(__dirname, 'forgot_password.html'))
-})
-app.get('/change_password', (req, res) => {
-    res.sendFile(path.join(__dirname, 'change_password.html'))
-})
 
 app.post('/signup', [
     recaptcha.middleware.verify,
@@ -139,7 +125,7 @@ app.get('/logout', (req, res) => {
             if (err) {
                 res.send('<p>error</p>')
             } else {
-                res.send('<p>logout successful</p><div><a href="/login">Go to login page</a></div>')
+                res.redirect('/')
             }
         });
     }
