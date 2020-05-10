@@ -1,5 +1,4 @@
 import React from "react";
-import axios from 'axios';
 import {makeStyles,theme} from "@material-ui/core/styles";
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
@@ -45,37 +44,31 @@ const useStyles = makeStyles(theme => ({
 
 function LoginForm(props) {
  const classes = useStyles();
- const [email, setEmail] = React.useState('');
+ const [username, setUsername] = React.useState('');
  const [password, setPassword] = React.useState('');
  const [isButtonDisabled, setIsButtonDisabled] = React.useState(true);
  const [helperText, setHelperText] = React.useState('');
  const [error, setError] = React.useState(false);
 
  React.useEffect(() => {
-    if (email.trim() && password.trim()) {
+    if (username.trim() && password.trim()) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [email, password]);
+  }, [username, password]);
 
   const handleLogin = () => {
-    let login_data={email: email,password: password}
-    axios("http://localhost/login", {
-      method: "post",
-      data: JSON.stringify(login_data),
-      withCredentials: true
-    }).then((resp)=>console.log(resp))
-    if (email === 'abc@email.com' && password === 'password') {
+    if (username === 'abc@email.com' && password === 'password') {
       setError(false);
       setHelperText('Login Successfully');
     } else {
       setError(true);
-      setHelperText('Incorrect email or password')
+      setHelperText('Incorrect username or password')
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e:any) => {
     if (e.keyCode === 13 || e.which === 13) {
       isButtonDisabled || handleLogin();
     }
@@ -88,12 +81,12 @@ function LoginForm(props) {
               <TextField
                 error={error}
                 fullWidth
-                id="email"
+                id="username"
                 type="email"
-                label="Email"
-                placeholder="Email"
+                label="Username"
+                placeholder="Username"
                 margin="normal"
-                onChange={(e)=>setEmail(e.target.value)}
+                onChange={(e)=>setUsername(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
               />
               <TextField
@@ -140,7 +133,7 @@ function LoginForm(props) {
                   variant="contained"
                   color="secondary"
                   onClick={props.handleSync}
-                  href="http://localhost:8080/auth/google"
+                  href="https://notesbackend.qwertyforce.ru:8080/auth/google"
                   startIcon={
                     <SvgIcon>
                       <FontAwesomeIcon icon={faGoogle} size="lg" />
@@ -154,7 +147,7 @@ function LoginForm(props) {
                 <Button
                   variant="contained"
                   onClick={props.handleSync}
-                  href="http://localhost:8080/auth/github"
+                  href="https://notesbackend.qwertyforce.ru:8080/auth/github"
                   startIcon={
                     <SvgIcon>
                       <FontAwesomeIcon icon={faGithub} size="lg" />

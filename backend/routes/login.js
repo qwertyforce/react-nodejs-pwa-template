@@ -31,7 +31,9 @@ async function login(req, res) {
             if (users[0].activated === true) {
                 req.session.authed = true;
                 req.session.user_id = users[0].id;
-                res.redirect("/profile")
+                res.json({
+                    message: "success"
+                })
             } else {
                 res.json({
                     message: "Please confirm your email"

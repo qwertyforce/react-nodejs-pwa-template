@@ -11,6 +11,7 @@ import {Switch,Route,Link} from "react-router-dom";
 import AppBar from "./AppBar/AppBar";
 import Settings from "./Settings";
 import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm";
 import './App.css';
 
 function App() {
@@ -168,6 +169,9 @@ function App2(){
                  </Route>
                  <Route path="/login">
                    <LoginForm/>
+                 </Route>
+                 <Route path="/singup">
+                   <SignUpForm/>
                  </Route>
                  <Route path="/settings">
                    <Settings handleChangeTheme={handleChangeTheme} />
