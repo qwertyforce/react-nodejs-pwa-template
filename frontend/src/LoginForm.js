@@ -58,26 +58,36 @@ function LoginForm(props) {
       setIsButtonDisabled(true);
     }
   }, [email, password]);
+  
 
-  const handleLogin = () => {
-    let login_data={email: email,password: password}
+  const handleLogin = (token) => {
+    let login_data={email: email,password: password,'g-recaptcha-response': token}
     axios("http://localhost/login", {
       method: "post",
-      data: JSON.stringify(login_data),
+      data: login_data,
       withCredentials: true
-    }).then((resp)=>console.log(resp))
-    if (email === 'abc@email.com' && password === 'password') {
+    }).then((resp)=>{
       setError(false);
-      setHelperText('Login Successfully');
-    } else {
+      // setHelperText('Login Successful');
+      console.log(resp)
+    }).catch((err)=>{
       setError(true);
-      setHelperText('Incorrect email or password')
-    }
+      setHelperText(err.response.data.message)
+      console.log(err.response)
+    })
   };
+  const _handleLogin = () => {
+    /*global grecaptcha*/ // defined in public/index.html
+    grecaptcha.ready(function() {
+      grecaptcha.execute('6LcqV9QUAAAAAEybBVr0FWnUnFQmOVxGoQ_Muhtb', {action: 'login'}).then(function(token) {
+        handleLogin(token)
+      });
+      })
+}
 
   const handleKeyPress = (e) => {
     if (e.keyCode === 13 || e.which === 13) {
-      isButtonDisabled || handleLogin();
+      isButtonDisabled || _handleLogin();
     }
   };
   return (
@@ -109,7 +119,7 @@ function LoginForm(props) {
                 onKeyPress={(e)=>handleKeyPress(e)}
               />
               <Box display="flex" justifyContent="flex-end">
-              <Button color="primary" component={RouterLink} to="/dashboard">
+              <Button color="primary" component={RouterLink} to="/signup">
                Sign up
              </Button>
            </Box>
@@ -122,7 +132,7 @@ function LoginForm(props) {
               size="large"
               color="primary"
               className={classes.loginBtn}
-              onClick={()=>handleLogin()}
+              onClick={()=>_handleLogin()}
               disabled={isButtonDisabled}>
               Login
             </Button>

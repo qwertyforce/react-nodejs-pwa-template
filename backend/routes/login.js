@@ -6,17 +6,17 @@ const crypto_ops = require('./../helpers/crypto_ops.js')
 async function login(req, res) {
     if (req.recaptcha.error) {
         return res.status(403).json({
-            message: ["Captcha error"]
+            message: "Captcha error"
         });
     }
     const errors = validationResult(req);
+    const MESSAGE_FOR_AUTH_ERROR = "This combination of email and password is not found";
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            message: errors.array()
+            message: MESSAGE_FOR_AUTH_ERROR
         });
     }
 
-    const MESSAGE_FOR_AUTH_ERROR = "This combination of email and password is not found";
     let email = req.body.email;
     let password = req.body.password
     let users = await db_ops.activated_user.find_user_by_email(email);
@@ -35,12 +35,12 @@ async function login(req, res) {
                     message: "success"
                 })
             } else {
-                res.json({
+                res.status(403).json({
                     message: "Please confirm your email"
                 })
             }
         } else {
-            res.json({
+            res.status(403).json({
                     message: MESSAGE_FOR_AUTH_ERROR
                 })
         }

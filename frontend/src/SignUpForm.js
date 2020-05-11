@@ -44,31 +44,42 @@ const useStyles = makeStyles(theme => ({
 
 function LoginForm(props) {
  const classes = useStyles();
- const [username, setUsername] = React.useState('');
+ const [email, setEmail] = React.useState('');
  const [password, setPassword] = React.useState('');
+ const [password2, setPassword2] = React.useState('');
  const [isButtonDisabled, setIsButtonDisabled] = React.useState(true);
  const [helperText, setHelperText] = React.useState('');
  const [error, setError] = React.useState(false);
-
+ function validateEmail(email) 
+ {
+     var re = /\S+@\S+\.\S+/;
+     return re.test(email);
+ }
  React.useEffect(() => {
-    if (username.trim() && password.trim()) {
+    if (email.trim() && password.trim()) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [username, password]);
+  }, [email, password]);
 
   const handleLogin = () => {
-    if (username === 'abc@email.com' && password === 'password') {
-      setError(false);
-      setHelperText('Login Successfully');
-    } else {
-      setError(true);
-      setHelperText('Incorrect username or password')
+    if(validateEmail(email)){
+      if(password.length > 7 && password.length<129 && password===password2){
+        setError(false)
+        setHelperText("check your email for activation link")
+      }else{
+        setError(true)
+        setHelperText("passwords do not match")
+      }
+    }else{
+      setError(true)
+      setHelperText("email is invalid")
     }
+    
   };
 
-  const handleKeyPress = (e:any) => {
+  const handleKeyPress = (e) => {
     if (e.keyCode === 13 || e.which === 13) {
       isButtonDisabled || handleLogin();
     }
@@ -81,12 +92,12 @@ function LoginForm(props) {
               <TextField
                 error={error}
                 fullWidth
-                id="username"
+                id="email"
                 type="email"
-                label="Username"
+                label="Email"
                 placeholder="Username"
                 margin="normal"
-                onChange={(e)=>setUsername(e.target.value)}
+                onChange={(e)=>setEmail(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
               />
               <TextField
@@ -97,16 +108,21 @@ function LoginForm(props) {
                 label="Password"
                 placeholder="Password"
                 margin="normal"
-                helperText={helperText}
                 onChange={(e)=>setPassword(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
               />
-              <Box display="flex" justifyContent="flex-end">
-              <Button color="primary" component={RouterLink} to="/dashboard">
-               Sign up
-             </Button>
-           </Box>
-
+              <TextField
+                error={error}
+                fullWidth
+                id="password2"
+                type="password"
+                label="Repeat password"
+                placeholder="Repeat password"
+                margin="normal"
+                helperText={helperText}
+                onChange={(e)=>setPassword2(e.target.value)}
+                onKeyPress={(e)=>handleKeyPress(e)}
+              />
             </div>
           </CardContent>
           <CardActions  className={classes.CardActions}>
@@ -117,49 +133,8 @@ function LoginForm(props) {
               className={classes.loginBtn}
               onClick={()=>handleLogin()}
               disabled={isButtonDisabled}>
-              Login
+              SignUp
             </Button>
-
-            <Grid
-              className={classes.Oauth}
-              container
-              direction="row"
-              justify="center"
-              spacing={1}
-              alignItems="center"
-            >
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={props.handleSync}
-                  href="https://notesbackend.qwertyforce.ru:8080/auth/google"
-                  startIcon={
-                    <SvgIcon>
-                      <FontAwesomeIcon icon={faGoogle} size="lg" />
-                    </SvgIcon>
-                  }
-                >
-                  Google
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  onClick={props.handleSync}
-                  href="https://notesbackend.qwertyforce.ru:8080/auth/github"
-                  startIcon={
-                    <SvgIcon>
-                      <FontAwesomeIcon icon={faGithub} size="lg" />
-                    </SvgIcon>
-                  }
-                >
-                  Github
-                </Button>
-              </Grid>
-            </Grid>
-
-
           </CardActions>
         </Card>
       </form>

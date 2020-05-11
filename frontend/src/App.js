@@ -170,7 +170,7 @@ function App2(){
                  <Route path="/login">
                    <LoginForm/>
                  </Route>
-                 <Route path="/singup">
+                 <Route path="/signup">
                    <SignUpForm/>
                  </Route>
                  <Route path="/settings">
