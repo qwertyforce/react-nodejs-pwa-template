@@ -128,12 +128,11 @@ app.get('/activate',activate_account_email)
 
 app.get('/logout', (req, res) => {
     if (req.session) {
-        req.session.destroy(function(err) {
+        req.session.destroy(function (err) {
             if (err) {
-                res.send('<p>error</p>')
-            } else {
-                res.redirect('/')
+                console.log(err)
             }
+            res.redirect('back')
         });
     }
 })
