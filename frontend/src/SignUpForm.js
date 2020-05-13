@@ -1,18 +1,12 @@
 import React from "react";
-import {makeStyles,theme} from "@material-ui/core/styles";
+import axios from 'axios';
+import {makeStyles} from "@material-ui/core/styles";
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import CardHeader from '@material-ui/core/CardHeader';
-import Box from '@material-ui/core/Box';
-import { Link as RouterLink } from 'react-router-dom';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Grid from "@material-ui/core/Grid";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
-import Link from '@material-ui/core/Link';
+
 
 const useStyles = makeStyles(theme => ({
       container: {
@@ -56,32 +50,62 @@ function LoginForm(props) {
      return re.test(email);
  }
  React.useEffect(() => {
-    if (email.trim() && password.trim()) {
+    if (email.trim() && password.trim() && password2.trim()) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [email, password]);
+  }, [email, password,password2]);
 
-  const handleLogin = () => {
-    if(validateEmail(email)){
-      if(password.length > 7 && password.length<129 && password===password2){
-        setError(false)
-        setHelperText("check your email for activation link")
+  const handleSignUp = (token) => {
+    let login_data={email: email,password: password,'g-recaptcha-response': token}
+    axios("http://localhost/signup", {
+      method: "post",
+      data: login_data,
+      withCredentials: true
+    }).then((resp)=>{
+      setError(false);
+      setHelperText(resp.data.message);
+      console.log(resp)
+    }).catch((err)=>{
+      console.log(err)
+      setError(true);
+      if(err.response){
+        setHelperText(err.response.data.message)
+        console.log(err.response)
       }else{
+        setHelperText("Unknown error")
+      }
+    })
+    
+  };
+  const _handleSignUp = () => {
+    /*global grecaptcha*/ // defined in public/index.html
+    if (validateEmail(email)) {
+      if (password === password2) {
+        if (password.length > 7 && password.length < 129) {
+          grecaptcha.ready(function () {
+            grecaptcha.execute('6LcqV9QUAAAAAEybBVr0FWnUnFQmOVxGoQ_Muhtb', { action: 'login' }).then(function (token) {
+              handleSignUp(token)
+            });
+          })
+        } else {
+          setError(true)
+          setHelperText("password length must be greater than  7 and less than 129")
+        }
+      } else {
         setError(true)
         setHelperText("passwords do not match")
       }
-    }else{
+    } else {
       setError(true)
       setHelperText("email is invalid")
     }
-    
-  };
+  }
 
   const handleKeyPress = (e) => {
     if (e.keyCode === 13 || e.which === 13) {
-      isButtonDisabled || handleLogin();
+      isButtonDisabled || _handleSignUp();
     }
   };
   return (
@@ -95,7 +119,7 @@ function LoginForm(props) {
                 id="email"
                 type="email"
                 label="Email"
-                placeholder="Username"
+                placeholder="Email"
                 margin="normal"
                 onChange={(e)=>setEmail(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
@@ -131,7 +155,7 @@ function LoginForm(props) {
               size="large"
               color="primary"
               className={classes.loginBtn}
-              onClick={()=>handleLogin()}
+              onClick={()=>_handleSignUp()}
               disabled={isButtonDisabled}>
               SignUp
             </Button>
