@@ -68,12 +68,16 @@ function LoginForm(props) {
       withCredentials: true
     }).then((resp)=>{
       setError(false);
-      // setHelperText('Login Successful');
+      setHelperText('Successful');
       console.log(resp)
     }).catch((err)=>{
       setError(true);
-      setHelperText(err.response.data.message)
-      console.log(err.response)
+      if(err.response){
+        setHelperText(err.response.data.message)
+        console.log(err.response)
+      }else{
+        setHelperText("Unknown error")
+      }
     })
   };
   const _handleLogin = () => {
