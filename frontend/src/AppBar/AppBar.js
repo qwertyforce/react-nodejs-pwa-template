@@ -2,9 +2,6 @@ import React from "react";
 import clsx from 'clsx';
 import { fade, makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import SettingsIcon from "@material-ui/icons/Settings";
-import Slide from "@material-ui/core/Slide";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import SearchIcon from "@material-ui/icons/Search";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,6 +13,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import AppDrawer from "./Drawer";
+import { useSelector} from 'react-redux';
+import {selectMailNotifications,selectGeneralNotifications} from '../redux_slices/userDataSlice';
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -92,6 +91,11 @@ const useStyles = makeStyles(theme => ({
 
 function App_Bar (props) {
   const classes = useStyles();
+  const GeneralNotifications = useSelector(selectGeneralNotifications);
+  const store = useSelector(state => state.user_data)
+  // React.useEffect(() => {console.log(store)} , [store]);
+  // React.useEffect(() => {console.log(GeneralNotifications)} , [GeneralNotifications]);
+  const MailNotifications = useSelector(selectMailNotifications);
   return (
     <div>
       <AppBar 
@@ -134,7 +138,7 @@ function App_Bar (props) {
             aria-label="open settings"
             onClick={props.handleMenuClick}
           >
-          <Badge badgeContent={4} color="secondary">
+          <Badge badgeContent={MailNotifications} color="secondary">
             <MailIcon />
           </Badge>
           </IconButton>
@@ -146,7 +150,7 @@ function App_Bar (props) {
             aria-label="open settings"
             onClick={props.handleMenuClick}
           >
-           <Badge badgeContent={4} color="secondary">
+           <Badge badgeContent={GeneralNotifications} color="secondary">
             <NotificationsIcon />
           </Badge>
           </IconButton>

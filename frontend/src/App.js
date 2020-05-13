@@ -1,17 +1,21 @@
 import React from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import clsx from 'clsx';
 import theme from "./theme";
-import {Switch,Route,Link} from "react-router-dom";
+import {Switch,Route} from "react-router-dom";
 import AppBar from "./AppBar/AppBar";
 import Settings from "./Settings";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
+import { set_email, set_mail_notifications, set_general_notifications } from './redux_slices/userDataSlice';
+import {useDispatch } from 'react-redux';
+
 import './App.css';
 
 function App() {
@@ -116,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function App2(){
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   //Theme color/////////////////////////////////////////////////////////////
   const [DynamicTheme, setTheme] = React.useState(createMuiTheme(theme));
   const [theme_color, set_theme_color] = React.useState("light");
@@ -136,6 +140,23 @@ function App2(){
 
   ////On start//////////////////////////////////////////////////////////////
   React.useEffect(() => {
+    axios("http://localhost/profile", {
+      method: "get",
+      withCredentials: true
+    }).then((resp)=>{
+     let user_data=resp.data.data;
+     if(user_data!==null){
+      dispatch(set_email(user_data.email))
+      dispatch(set_general_notifications(user_data.general_notifications))
+      dispatch(set_mail_notifications(user_data.mail_notifications))
+     }
+      console.log(resp)
+    }).catch((err)=>{
+      if(err.response){
+        console.log(err.response)
+      }
+    })
+
     let theme_color_local = localStorage.getItem("theme_color");
     if (theme_color_local) {
        set_theme_color(theme_color_local)
