@@ -6,13 +6,13 @@ const {validationResult} = require('express-validator');
 async function signup(req, res) {
     if (req.recaptcha.error) {
         return res.status(403).json({
-            message: ["Captcha error"]
+            message: "Captcha error"
         })
     }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            message: errors.array()
+            message: "email or password validation error"
         });
     }
     let email = req.body.email;

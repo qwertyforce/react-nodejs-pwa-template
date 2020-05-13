@@ -114,6 +114,14 @@ async function find_user_id_by_password_recovery_token(token) {
 //////////////////////////////////////////
 
 //////////////////////////////////////////ACTIVATED USER
+
+async function update_user_mail_notifications_by_id(id,mail_notifications) {
+    updateDocument("users", {id: id},{mail_notifications:mail_notifications})
+}
+async function update_user_general_notifications_by_id(id,general_notifications) {
+    updateDocument("users", {id: id},{general_notifications:general_notifications})
+}
+
 async function find_user_by_email(email) {
     let user = findDocuments("users", {
         email: email
@@ -141,6 +149,8 @@ async function create_new_user_activated(email, pass) {
         email: email,
         id: id,
         password: pass,
+        general_notifications:0,
+        mail_notifications:0,
         activated: true
     }])
 }
@@ -151,6 +161,8 @@ async function create_new_user_activated_github(oauth_id) {
     insertDocuments("users", [{
         oauth_id: oauth_id,
         id: id,
+        general_notifications:0,
+        mail_notifications:0,
         activated: true
     }])
     return id
@@ -162,6 +174,8 @@ async function create_new_user_activated_google(oauth_id,email) {
         oauth_id: oauth_id,
         email_google:email,
         id: id,
+        general_notifications:0,
+        mail_notifications:0,
         activated: true
     }])
     return id
@@ -207,7 +221,9 @@ module.exports =  {
         find_user_by_id,
         create_new_user_activated,
         create_new_user_activated_github,
-        create_new_user_activated_google
+        create_new_user_activated_google,
+        update_user_general_notifications_by_id,
+        update_user_mail_notifications_by_id
     },
     not_activated_user:{
         find_not_activated_user_by_token,

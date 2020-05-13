@@ -1,12 +1,11 @@
 const nodemailer = require('nodemailer');
-const transporter = nodemailer.createTransport({
- service: 'gmail',
- auth: {
-        user: 'auth.test.reg.email@gmail.com',
-        pass: 'password'
-    }
-});
-
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+           user: 'auth.test.reg.email@gmail.com',
+           pass: 'sbuLBh9rAV8XD2'
+       }
+   });
 function send_activation_letter(email, link) {
     const mailOptions = {
         from: 'auth.test.reg.email@gmail.com', // sender address
