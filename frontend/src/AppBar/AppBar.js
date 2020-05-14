@@ -92,9 +92,6 @@ const useStyles = makeStyles(theme => ({
 function App_Bar (props) {
   const classes = useStyles();
   const GeneralNotifications = useSelector(selectGeneralNotifications);
-  const store = useSelector(state => state.user_data)
-  // React.useEffect(() => {console.log(store)} , [store]);
-  // React.useEffect(() => {console.log(GeneralNotifications)} , [GeneralNotifications]);
   const MailNotifications = useSelector(selectMailNotifications);
   return (
     <div>
