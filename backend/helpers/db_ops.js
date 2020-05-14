@@ -121,6 +121,11 @@ async function update_user_mail_notifications_by_id(id,mail_notifications) {
 async function update_user_general_notifications_by_id(id,general_notifications) {
     updateDocument("users", {id: id},{general_notifications:general_notifications})
 }
+async function update_user_webpush_subscription_by_id(id,subscription) {
+    updateDocument("users", {id: id},{subscription:subscription})
+}
+
+
 
 async function find_user_by_email(email) {
     let user = findDocuments("users", {
@@ -223,7 +228,8 @@ module.exports =  {
         create_new_user_activated_github,
         create_new_user_activated_google,
         update_user_general_notifications_by_id,
-        update_user_mail_notifications_by_id
+        update_user_mail_notifications_by_id,
+        update_user_webpush_subscription_by_id
     },
     not_activated_user:{
         find_not_activated_user_by_token,
