@@ -1,37 +1,32 @@
 const webPush = require("web-push");
-const db_ops = require('./../helpers/db_ops.js')
-const express = require("express");
-const bodyParser = require("body-parser");
-const port = 80;
-const app = express();
-const active_users=new Set();
-app.use(bodyParser.json());
-app.listen(port, () => console.log(`Express app listening on port ${port}!`));
-
+const db_ops = require('./helpers/db_ops.js')
 const keys = webPush.generateVAPIDKeys();
+const active_users=new Set();
+
 webPush.setVapidDetails(
   "mailto:example@yourdomain.org",
   keys.publicKey,
   keys.privateKey
 );
-app.use(express.static("./"));
 
-app.get("/vapidPublicKey", function (req, res) {
-  res.send(keys.publicKey);
-});
-app.post("/register", async function (req, res) {
-  console.log(req.body.subscription);
-  console.log(req.body.id);
-  const user_id=req.session.user_id;
-  const users = await db_ops.activated_user.find_user_by_id(user_id);
-  if(users.length!==0){
-    if(typeof req.body.subscription ==="string"){
-      active_users.add(user_id)
-      db_ops.activated_user.update_user_webpush_subscription_by_id(user_id,req.body.subscription)
+async function vapidPublicKey (req,res){
+  res.send(keys.publicKey)
+}
+
+async function register (req,res){
+  if(req.session.authed){
+    const user_id=req.session.user_id;
+    const users = await db_ops.activated_user.find_user_by_id(user_id);
+    if(users.length!==0){
+      if(typeof req.body.subscription ==="string"){
+        active_users.add(user_id)
+        db_ops.activated_user.update_user_webpush_subscription_by_id(user_id,req.body.subscription)
+      }
     }
+    // res.json(user);
   }
-  res.json(user);
-});
+  // res.json("not_authed");
+}
 
 setInterval(function () {
   console.log("interval");
@@ -54,3 +49,5 @@ setInterval(function () {
     }
   }
 }, 6 * 1000);
+
+module.exports={register:register,vapidPublicKey:vapidPublicKey}

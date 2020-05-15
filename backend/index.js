@@ -82,13 +82,15 @@ const forgot_password=require('./routes/forgot_password.js')
 
 const activate_account_email=require('./routes/activate_account_email.js')
 
+const {vapidPublicKey,register}=require('./webpush')
+app.get('/vapidPublicKey',vapidPublicKey)
+app.get('/auth/github',register)
+
+
 app.get('/profile',profile)
-
-
 
 app.get('/auth/google',google_oauth_redirect)
 app.get('/auth/github',github_oauth_redirect)
-
 app.get('/auth/github/callback',github_oauth_callback)
 app.get('/auth/google/callback',google_oauth_callback)
 
@@ -110,7 +112,6 @@ app.post('/login', [
     }),
 ], login)
 
-
 app.post('/change_pw', [
     recaptcha.middleware.verify,
     check('password').isLength({
@@ -125,7 +126,6 @@ app.post('/forgot_pw', [
 ],forgot_password)
 
 app.get('/activate',activate_account_email)
-
 app.get('/logout', (req, res) => {
     if (req.session) {
         req.session.destroy(function (err) {
@@ -136,3 +136,4 @@ app.get('/logout', (req, res) => {
         });
     }
 })
+
