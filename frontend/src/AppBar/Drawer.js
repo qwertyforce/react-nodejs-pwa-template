@@ -55,9 +55,9 @@ function AppDrawer (props) {
         </div>
         <Divider />
         <List>
-        <ListItem button component={Link} to="/dashboard"  >
+        <ListItem button component={Link} to="/push_notifications"  >
           <ListItemIcon><InboxIcon /></ListItemIcon>
-          <ListItemText>Text</ListItemText>
+          <ListItemText>Push Notifications</ListItemText>
         </ListItem>
         <ListItem button component={Link} to="/dashboard"  >
           <ListItemIcon><MailIcon /></ListItemIcon>

@@ -12,6 +12,7 @@ import Settings from "./Settings";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import Home from "./Home";
+import PushNotifications from "./PushNotifications";
 import { set_email, set_mail_notifications, set_general_notifications } from './redux_slices/userDataSlice';
 import {useDispatch } from 'react-redux';
 
@@ -60,6 +61,9 @@ function App2(){
 
   ////On start//////////////////////////////////////////////////////////////
   React.useEffect(() => {
+    navigator.serviceWorker.onmessage = function (e) {
+      console.log('e.data', e.data);
+  };
     axios("http://localhost/profile", {
       method: "get",
       withCredentials: true
@@ -107,6 +111,9 @@ function App2(){
                  </Route>
                  <Route path="/login">
                    <LoginForm/>
+                 </Route>
+                 <Route path="/push_notifications">
+                   <PushNotifications/>
                  </Route>
                  <Route path="/signup">
                    <SignUpForm/>
