@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 var cors_options={
-    "origin": "http://localhost:3000",
+    "origin": "http://localhost:5000",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "credentials":true,
     "preflightContinue": false,
@@ -84,7 +84,7 @@ const activate_account_email=require('./routes/activate_account_email.js')
 
 const {vapidPublicKey,register}=require('./webpush')
 app.get('/vapidPublicKey',vapidPublicKey)
-app.get('/auth/github',register)
+app.post('/register',register)
 
 
 app.get('/profile',profile)

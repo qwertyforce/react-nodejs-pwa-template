@@ -18,33 +18,39 @@ async function register (req,res){
     const user_id=req.session.user_id;
     const users = await db_ops.activated_user.find_user_by_id(user_id);
     if(users.length!==0){
-      if(typeof req.body.subscription ==="string"){
+      if(typeof req.body.subscription){
         active_users.add(user_id)
         db_ops.activated_user.update_user_webpush_subscription_by_id(user_id,req.body.subscription)
       }
     }
-    // res.json(user);
+    res.sendStatus(200);
   }
   // res.json("not_authed");
 }
 
-setInterval(function () {
-  console.log("interval");
-  for (let user of active_users) {
+setInterval(async function () {
+  console.log(active_users);
+  for (let user_id of active_users) {
+    let user=await db_ops.activated_user.find_user_by_id(user_id)
+    user=user[0]
+    console.log(user)
     if(user.subscription){
     const subscription = user.subscription;
+    console.log(subscription.keys.auth)
     const payload = JSON.stringify({
       title: "New notification",
       body: "sample text",
+      general_notifications:9,
+      mail_notifications:9
     });
     const options = {
       TTL: 5,
     };
     console.log("sent");
-    var m=i
     webPush.sendNotification(subscription, payload, options).catch(function (error) {
+        console.log(user_id)
         console.log(error)
-        active_users.forEach(x => x.user_id === user.user_id ? active_users.delete(x) : x)
+        active_users.delete(user_id)
       });
     }
   }
