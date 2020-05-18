@@ -63,6 +63,8 @@ function App2(){
   React.useEffect(() => {
     navigator.serviceWorker.onmessage = function (e) {
       console.log('e.data', e.data);
+      dispatch(set_general_notifications(e.data.general_notifications))
+      dispatch(set_mail_notifications(e.data.mail_notifications))
   };
     axios("http://localhost/profile", {
       method: "get",

@@ -19,21 +19,12 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(2),
         flexGrow: 1
       },
-      header: {
-        textAlign: 'center',
-        background: '#212121',
-        color: '#fff'
-      },
       card: {
         marginTop: theme.spacing(10)
       },
       CardActions:{
         'flex-wrap': 'wrap'
-      },
-      Oauth:{
-        'margin-left': '0px !important'
       }
-
 }));
 
 function LoginForm(props) {

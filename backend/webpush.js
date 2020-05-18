@@ -33,15 +33,17 @@ setInterval(async function () {
   for (let user_id of active_users) {
     let user=await db_ops.activated_user.find_user_by_id(user_id)
     user=user[0]
-    console.log(user)
     if(user.subscription){
     const subscription = user.subscription;
-    console.log(subscription.keys.auth)
+    const g_n=Math.floor(Math.random()*10)
+    const m_n=Math.floor(Math.random()*10)
+    db_ops.activated_user.update_user_general_notifications_by_id(user_id,g_n)
+    db_ops.activated_user.update_user_mail_notifications_by_id(user_id,m_n)
     const payload = JSON.stringify({
       title: "New notification",
       body: "sample text",
-      general_notifications:9,
-      mail_notifications:9
+      general_notifications:g_n,
+      mail_notifications:m_n
     });
     const options = {
       TTL: 5,

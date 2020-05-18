@@ -1,20 +1,17 @@
 import React from "react";
 import axios from 'axios';
-import {makeStyles,theme} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import CardHeader from '@material-ui/core/CardHeader';
 import Box from '@material-ui/core/Box';
 import { Link as RouterLink } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Grid from "@material-ui/core/Grid";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
-import Link from '@material-ui/core/Link';
-
 const useStyles = makeStyles(theme => ({
       container: {
         display: 'flex',
@@ -26,11 +23,6 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(2),
         flexGrow: 1
       },
-      header: {
-        textAlign: 'center',
-        background: '#212121',
-        color: '#fff'
-      },
       card: {
         marginTop: theme.spacing(10)
       },
@@ -40,7 +32,6 @@ const useStyles = makeStyles(theme => ({
       Oauth:{
         'margin-left': '0px !important'
       }
-
 }));
 
 function LoginForm(props) {

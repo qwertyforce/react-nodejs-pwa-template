@@ -44,7 +44,7 @@ function AppDrawer (props) {
         anchor="left"
         open={props.open}
         classes={{
-          paper: classes.drawerPaper,
+          drawerPaper: classes.drawerPaper,
         }}
       >
         <div className={classes.drawerHeader}>
