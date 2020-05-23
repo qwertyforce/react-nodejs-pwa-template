@@ -31,14 +31,14 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-var cors_options={
+const cors_options={
     "origin": "http://localhost:5000",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "credentials":true,
     "preflightContinue": false,
     "optionsSuccessStatus": 204
   }
-  app.use(cors(cors_options));
+app.use(cors(cors_options));
 app.disable('x-powered-by');
 app.use(cookieParser());
 app.use(session({
